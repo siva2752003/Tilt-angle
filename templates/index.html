@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Simulation</title>
+    <style>
+        .slider-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solar Panel Simulation</h1>
+    <form id="parameters-form">
+        <div class="slider-container">
+            <label for="tilt_angle">Tilt Angle (β):</label>
+            <input type="range" id="tilt_angle" name="tilt_angle" min="0" max="90" step="1" value="30">
+            <span id="tilt_angle_value">30</span>°
+        </div>
+
+        <div class="slider-container">
+            <label for="latitude">Latitude (φ):</label>
+            <input type="range" id="latitude" name="latitude" min="-90" max="90" step="1" value="0">
+            <span id="latitude_value">0</span>°
+        </div>
+
+        <div class="slider-container">
+            <label for="rated_power_output">Rated Power (W):</label>
+            <input type="range" id="rated_power_output" name="rated_power_output" min="0" max="1000" step="10" value="500">
+            <span id="rated_power_output_value">500</span>
+        </div>
+
+        <div class="slider-container">
+            <label for="panel_area">Panel Area (m²):</label>
+            <input type="range" id="panel_area" name="panel_area" min="0.1" max="10" step="0.1" value="2">
+            <span id="panel_area_value">2</span>
+        </div>
+
+        <input type="submit" value="Generate Plot">
+    </form>
+    <br>
+    <img id="plot-image" src="/plot" alt="Solar Panel Plot">
+    
+    <script>
+        const tiltAngleSlider = document.getElementById('tilt_angle');
+        const tiltAngleValue = document.getElementById('tilt_angle_value');
+        const latitudeSlider = document.getElementById('latitude');
+        const latitudeValue = document.getElementById('latitude_value');
+        const ratedPowerSlider = document.getElementById('rated_power_output');
+        const ratedPowerValue = document.getElementById('rated_power_output_value');
+        const panelAreaSlider = document.getElementById('panel_area');
+        const panelAreaValue = document.getElementById('panel_area_value');
+
+        // Update span text when sliders change
+        tiltAngleSlider.oninput = function() {
+            tiltAngleValue.textContent = this.value;
+        }
+        latitudeSlider.oninput = function() {
+            latitudeValue.textContent = this.value;
+        }
+        ratedPowerSlider.oninput = function() {
+            ratedPowerValue.textContent = this.value;
+        }
+        panelAreaSlider.oninput = function() {
+            panelAreaValue.textContent = this.value;
+        }
+
+        // Update the image source when the form is submitted
+        document.getElementById('parameters-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const queryString = new URLSearchParams(formData).toString();
+            document.getElementById('plot-image').src = `/plot?${queryString}`;
+        });
+    </script>
+</body>
+</html>
